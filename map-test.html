@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <script src="assets/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+    </head>
+    <body>
+        <div id="app">
+            <header class="sticky-top">
+                <div class="">
+                    <div class="row">
+                        <div class="w-100 text-center bg-white">
+                            <h3>Welcome to the RS21 Demo<br>
+                                Today is {{ currentDayofWeek() }}, {{ currentMonth() }} {{ date.getDate() }}, {{ date.getFullYear() }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <section>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+            </section>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
+</html>
