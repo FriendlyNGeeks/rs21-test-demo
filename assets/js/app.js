@@ -1,24 +1,14 @@
-Vue.component('card', {
-
-  props: ['currentday', 'currentmonth', 'day', 'year'],
-
-  template: `
-  <div class="container my-6">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 text-center bg-white">
-            <h3>Welcome to the RS21 Demo<br>
-                Today is {{ currentday }}, {{ currentmonth }} {{ day }}, {{ year }}</h3>
-        </div>
-    </div>
-  </div>`
-
-})
-
 new Vue({
     el: '#app',
     data:  {
-      date: new Date(),
-      
+        listings: [],
+        date: new Date()
+    },
+    components: {
+    
+    },
+    created: function() {
+      console.log("Vue instances created")
     },
     methods: {
       currentMonth() {
@@ -32,9 +22,25 @@ new Vue({
         days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
         currentDayofWeek = days[date.getDay()]
         return currentDayofWeek
+      },
+      getAddresses: function() {
+        c = [];
+        $.getJSON( "assets/data-sets/dataset_1.json", function( data ) {
+          $.each( data, function( key, val ) {
+            //Push objects returned in data to temp array
+            c.push(val);
+          });
+        });
+        //Push temp array to global VUE Array data.[listings]
+        this.listings = c;
       }
     },
     computed: {
       
+    },
+    mounted: function() {
+      //Used to read data sets to javascript variables on load of VUE instances
+      console.log("VUE instances mounted");
+      this.getAddresses();
     }
   })

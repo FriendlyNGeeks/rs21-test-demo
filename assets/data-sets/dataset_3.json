@@ -1,0 +1,23 @@
+{
+  "1": {
+    "State": "Georgia",
+    "City": "Stockbridge",
+    "Street": "30 Sentry Oak Ct",
+    "Zip": "30281",
+    "Years": "3.5"
+  },
+  "2": {
+    "State": "Minnesota",
+    "City": "Duluth",
+    "Street": "5708 Cody St",
+    "Zip": "55807",
+    "Years": "2"
+  },
+  "3": {
+    "State": "New Mexico",
+    "City": "Albuquerque",
+    "Street": "8705 Jet Stream Rd NW",
+    "Zip": "87120",
+    "Years": "1.5"
+  }
+}

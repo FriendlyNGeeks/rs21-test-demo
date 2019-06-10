@@ -1,16 +1,25 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="assets/js/jquery.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+        <script src="assets/components/vue-components.js"></script>
         <link rel="stylesheet" href="assets/css/style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+
+        <!-- <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script> -->
     </head>
     <body>
         <div id="app">
             <header class="sticky-top">
                 <div class="">
-                    <div class="row">
+                    <div class="">
                         <div class="w-100 text-center bg-white">
                             <h3>Welcome to the RS21 Demo<br>
                                 Today is {{ currentDayofWeek() }}, {{ currentMonth() }} {{ date.getDate() }}, {{ date.getFullYear() }}</h3>
@@ -19,19 +28,28 @@
                 </div>
             </header>
             <section>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
-                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear()></card>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Year
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
+                        <li>
+                            <a class="dropdown-item" href="#" v-bind:key="listing.id" v-for="(listing, index) in listings" v-bind:street=listings[index].Street>{{listings[index].Year}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <ul>
+                    <addresses v-bind:key="listing.id" v-for="(listing, index) in listings" v-bind:street=listings[index].Street v-bind:city=listings[index].City v-bind:state=listings[index].State v-bind:zip=listings[index].Zip></addresses>
+                </ul>
+                <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear() class="card"></card>
+                <div id="map-container">
+                    <div id="map" class="container-fluid leaflet-container leaflet-touch leaflet-fade-anim leaflet-touch-zoom leaflet-grab leaflet-touch-drag">
+
+                    </div>    
+                </div>
             </section>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="assets/js/app.js"></script>
+        <script src="assets/js/leaflet-mymap.js"></script>
     </body>
 </html>
