@@ -12,15 +12,13 @@ Vue.component('card', {
       </div>
     </div>
     `
-  
 })
 
 Vue.component('addresses', {
 
-  props: ['street', 'city', 'state', 'zip', 'year'],
+  props: ['name', 'category'],
 
   template: `
-  <li id='' class="card">{{ street }} {{city}}, {{state}} {{zip}}</li>
+  <li id='test' class="card">{{ name }} {{category}}</li>
   `
-
 })

@@ -1,0 +1,11 @@
+{
+  "1": {
+    "Type": "Facebook"
+  },
+  "2": {
+    "Type": "Twitter"
+  },
+  "3": {
+    "Type": "Census"
+  }
+}

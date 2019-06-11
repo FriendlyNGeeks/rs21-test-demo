@@ -1,14 +1,71 @@
 body {
     background: lightblue !important;
 }
-#map-container {
-    height: 700px;
-    width: 48%;
+
+#app {
     position: fixed;
-    right: 0px;
-    bottom: 0px;
-}
-#map-container #map {
     height: 100%;
+    width: 100%;
+}
+
+.app-container {
+    margin: 0px;
+}
+
+#data-set-selector {
+    float: left;
+    top: 12px;
+}
+
+#map-container {
     position: relative;
+    bottom: 0px;
+    right: 0px;
+}
+
+#map-container #map {
+    height: 90vh;
+    width: 100%;
+    position: relative;
+}
+
+#col-left {
+    height: 90vh;
+    width: 30vw;
+    position: fixed;
+    z-index: 999;
+}
+
+#data-set-container {
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+#data-set-container::-webkit-scrollbar {
+	width: 5px;
+}
+
+#data-set-container::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+#data-set-container::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+    background-color: red;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.ul-data-list {
+    margin: 0px;
+    padding: 0px;
+}
+
+#col-right {
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
 }
