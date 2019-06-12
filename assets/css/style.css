@@ -12,34 +12,83 @@ body {
     margin: 0px;
 }
 
+.app-container-display {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 82px;
+}
+
 #data-set-selector {
     float: left;
     top: 12px;
 }
 
+.dropdown-item {
+    user-select: none;
+}
+
 #map-container {
-    position: relative;
+    position: absolute;
     bottom: 0px;
     right: 0px;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 #map-container #map {
-    height: 90vh;
+    height: 100%;
     width: 100%;
     position: relative;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
 }
 
-#col-left {
-    height: 90vh;
-    width: 30vw;
+#display-toggle {
     position: fixed;
+    left: 0px;
+    top: calc(50% - 82px);;
+    width: 60px;
+    height: 200px;
+    font-size: 50px;
+    z-index: 99999;
+    background-color: rgb(11, 122, 191);
+    border-radius: 0px 25px 25px 0px;
+    border-style: solid;
+    border-width: 0px 3px 0px 0px;
+    border-color: rgb(132, 139, 142);
+    animation-iteration-count: infinite;
+	animation-duration: 2s;
+	animation-name: greenPulse;
+	-webkit-animation-name: greenPulse;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#display-controls {
+    height: 100%;
+    width: 30vw;
+    left: -30vw;
+    position: relative;
+    border-right: 1px solid black;
     z-index: 999;
+    animation-duration: 2s;
+	-webkit-animation-duration: 2s;
+	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: left 0.3s ease-out;
 }
 
 #data-set-container {
     overflow: hidden;
     overflow-y: scroll;
     background-color: white;
+    position: relative;
 }
 
 #data-set-container::-webkit-scrollbar {
@@ -60,12 +109,65 @@ body {
 }
 
 .ul-data-list {
+    height: 100%;
     margin: 0px;
     padding: 0px;
 }
+.data-set-item {
+    padding: 5px;
+    font-size: 1vw;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.data-set-item:hover {
+    background-color: lightgray;
+}
 
-#col-right {
-    height: 90vh;
+#display-map {
     width: 100vw;
-    position: fixed;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+/* Animations Toggle Classes */
+@-o-keyframes greenPulse {
+	0% { text-shadow: 0px 0px 5px transparent; }
+	50% { text-shadow: 0px 0px 5px #00FF00; }
+	100% { text-shadow: 0px 0px 5px transparent; }
+}
+
+@-moz-keyframes greenPulse {
+	0% { text-shadow: 0px 0px 5px transparent; }
+	50% { text-shadow: 0px 0px 5px #00FF00; }
+	100% { text-shadow: 0px 0px 5px transparent; }
+}
+
+/* Standard syntax */
+@keyframes greenPulse {
+	0% { text-shadow: 0px 0px 5px transparent; }
+	50% { text-shadow: 0px 0px 5px #00FF00; }
+	100% { text-shadow: 0px 0px 5px transparent; }
+}
+
+@-webkit-keyframes greenPulse {
+	0% { text-shadow: 0px 0px 5px transparent; }
+	50% { text-shadow: 0px 0px 5px #00FF00; }
+	100% { text-shadow: 0px 0px 5px transparent; }
+}
+
+.controlsSlideOut {
+	left: 0px !important;
+	animation-duration: 2s;
+	-webkit-animation-duration: 2s;
+	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: left 0.3s ease-out;
 }
