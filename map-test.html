@@ -32,20 +32,35 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">RS21 Demo | {WARNING}</h5>
+                </div>
+                <div class="modal-body">
+                    The data in this demo has been sanitized of all personal data and made available to the general public.
+                    <p></p>
+                    <p class="section-title">
+                        Children's privacy
+                    </p>
+                    <p>
+                        This website is not intended for use by children under the age of 18.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-cancel" >Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- VUE js and Main Body Content -->
         <div id="app">
             <header class="sticky-top">
-                <div class="">
+                <div class="header-nav">
                     <div class="">
-                            <div id="data-set-selector" class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Data Set
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
-                                    <li class="dropdown-item" href="#" onClick='openControls()' v-bind:key="type.id" v-for="(type, index) in data_sets" v-bind:type=data_sets[index].Type>
-                                        <a>{{data_sets[index].Type}}</a>
-                                    </li>
-                                </ul>
-                            </div>
                         <div class="w-100 pb-2 text-center bg-white">
                             <h3 class="m-0;">Welcome to the RS21 Demo<br>
                                 Today is {{ currentDayofWeek() }}, {{ currentMonth() }} {{ date.getDate() }}, {{ date.getFullYear() }}</h3>
@@ -55,15 +70,38 @@
             </header>
             <div class="app-container">
                 <div class="app-container-display">
-                        <div id="display-toggle" class="desktopSlide">
+                        <div id="display-toggle" onClick="data_io_open()">
                             <a href="javascript:void(0)" id="desktopMainClick" title="Data Controls" target="_blank" style="color: #FFFFFF; text-decoration: none; display: block; width: 100%; height: 100%">
-                            <span style="position:absolute; display:block; width: 200px; height: 60px; top: 70px; left: -70px; text-align:center; font-size:25px; line-height: 46px; -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg)">Data Controls</span>
+                                <span style="position:absolute; display:block; width: 200px; height: 60px; top: 70px; left: -70px; text-align:center; font-size:25px; line-height: 46px; -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg)">Data Controls</span>
                             </a>
                         </div>
                     <div id="display-controls" class="bg-white">
-                        <div id="data-io" class="w-100 h-50">
-                            <input></input>
+                        <div id="data-io" class="w-100 h-50 p-2 position-relative">
+                            <div id="data-set-selector" class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Data Set
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
+                                    <li class="dropdown-item" href="#" onClick="data_option_selected()" @click="openControls(data_sets[index].Type)" v-bind:key="type.id" v-for="(type, index) in data_sets" v-bind:type=data_sets[index].Type>
+                                        <a>{{data_sets[index].Type}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-secondary position-relative mb-1"style="top: 50px;">Map First 10</button>
+                            <button type="button" class="btn btn-secondary position-relative mb-1"style="top: 50px;">Map Last 10</button>
+                            <button type="button" class="btn btn-secondary position-relative mb-1"style="top: 50px;">Map 2 of Each Set</button>
+                            <button type="button" class="btn btn-danger position-relative mb-1" style="top: 50px;">Clear All</button>
+                            <button type="button" class="btn btn-light data-io-close" title="close" onClick="data_io_close()">X</button>
+                            <div id="data-set-filter-container" class="position-absolute text-center w-100">
+                                <div class="data-set-filter-group">      
+                                    <input type="text" required>
+                                    <span class="data-set-filter-highlight"></span>
+                                    <span class="data-set-filter-bar"></span>
+                                    <label>Filter Data Here...</label>
+                                </div>    
+                            </div>
                         </div>
+                        <div class="blue-divider"></div>
                         <div id="data-set-container" class="h-50">
                             <ul id="data-set-list-ul" class="ul-data-list">
                                 <!-- <addresses v-bind:key="listing.id" v-for="(listing, index) in listings" v-bind:name=listings[index].Name v-bind:category=listings[index].Category></addresses> -->
@@ -84,6 +122,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="footer">
+            <img id="rs21logo" src="assets/img/RS21_logo.png">
         </div>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/leaflet-mymap.js"></script>

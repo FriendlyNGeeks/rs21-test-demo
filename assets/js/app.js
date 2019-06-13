@@ -2,8 +2,11 @@ new Vue({
     el: '#app',
     data:  {
       date: new Date(),
-      listings: [],
       data_sets: [],
+      data_set_type: '',
+      Facebook: [],
+      Twitter: [],
+      Census: [],
       options: [],
       center: '',
       style_id: '',
@@ -13,7 +16,6 @@ new Vue({
       attribution: '',
       marker: '',
       jsonURL: 'https://api.myjson.com/bins/6k2md',
-      data_set_type: "dataset_facebook",
     },
     components: {
       'l-map': window.Vue2Leaflet.LMap,
@@ -27,6 +29,12 @@ new Vue({
       this.prepareMap();
     },
     methods: {
+      openControls(t)  {
+          $("#display-controls").addClass('controlsSlideOut');
+          this.data_set_type = t;
+          d = this[t];
+          this.get_datasets(this.data_set_type, d);
+      },
       currentMonth() {
         date = new Date(),
         months = ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -75,19 +83,23 @@ new Vue({
           }
           getLocalDataSets();
         })
-        
-        
       },
-      get_datasets: function(d) {
-        var jsonDataset = "assets/data-sets/" + this.data_set_type + ".json"
+
+      get_datasets: function(t, d) {
+        var jsonDataset = "assets/data-sets/" + t + ".json"
+        console.log(jsonDataset);
         $.getJSON( jsonDataset, function( data ) {
           
           function writeDataSetToDom (d) {
+            //Clear UL for new dataset
+            var ul = document.querySelector(".ul-data-list");
+            ul.innerHTML = "";
+            //Begin Document Fragment to write to DOM
             var c = document.createDocumentFragment();
               for (var i=0; i<d.length; i++) {
                   var e = document.createElement("li");
-                  var vueClick = document.createAttribute("v-on:click");       // Create a "class" attribute
-                  vueClick.value = "democlass";
+                  var vueClick = document.createAttribute("onClick");       // Create a "class" attribute
+                  vueClick.value = "alertNumber("+i+",\""+ t + "\")";
                   e.className = "data-set-item card";
                   e.id = "data-set";
                   e.setAttributeNode(vueClick);
@@ -97,7 +109,16 @@ new Vue({
                   //     ajaxViewersTwitchStats(this.innerHTML);
                   // });
                   // e.innerHTML = (d[i].Name +' '+ d[i].Category);
-                  e.innerHTML = ([i] +' | '+ d[i].Name);
+                  if (t == "Twitter"){
+                    // console.log(t);
+                    e.innerHTML = ([i] +' | Username: '+ d[i].Username);
+                  }else if (t == "Census") {
+                    // console.log(d[i]);
+                    e.innerHTML = ([i] +' | GEOID: '+ d[i].properties.GEOID);
+                  }else if(t == "Facebook"){
+                    e.innerHTML = ([i] +' | Place: '+ d[i].Name);
+                  }
+                  
                   c.appendChild(e);
               }
               document.getElementById("data-set-list-ul").appendChild(c);
@@ -114,11 +135,12 @@ new Vue({
               console.log('Pagination skipped');
               // PUSH DATA VALUES TO ARRAY ALL AT ONE TIME
               $.each( data, function( key, val ) {
-                //Push objects returned in data to global VUE Array data.[listings]
+                //Push objects returned in data to global VUE Array data.
                 d.push(val);
               });
               writeDataSetToDom(d);
             }
+            
 
             function startpagination(f, e) {
               var paginationMsg = "Pagination started on " + l + " items";
@@ -152,12 +174,21 @@ new Vue({
               }
               writeDataSetToDom(d);
             }
-
             //Logic test to paginate or not
             if (l > 200) {
-              startpagination(data, e, l);
+              // Check if data set has already been populated
+              if (d.length = '0'){
+                startpagination(data, e, l);
+              }else {
+                writeDataSetToDom(d);
+              }
             }else {
-              skippagination();
+              // Check if data set has already been populated
+              if (d.length = "0"){
+                skippagination();
+              }else {
+                writeDataSetToDom(d);
+              }
             }
           };
           //Logic function
@@ -176,6 +207,5 @@ new Vue({
       //Used to read data sets to javascript variables on load of VUE instances
       console.log("VUE instances mounted");
       this.get_datasets_type(this.data_sets);
-      this.get_datasets(this.listings);
     }
   })

@@ -20,14 +20,187 @@ body {
     top: 82px;
 }
 
+.header-nav {
+   background-color:  #f8f9fa;
+   box-shadow: 0px -5px 20px black;
+}
+
+.section-title {
+    color: rgba(0,0,0,0.8);
+    font-size: 1.05em;
+}
+
 #data-set-selector {
-    float: left;
-    top: 12px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+
+#data-set-selector > .btn {
+    background-color: rgb(11, 122, 191);
+}
+
+.show >.btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(11,122,191,.5);
+}
+
+#data-set-selector > .bootstrap-select > .dropdown-toggle > .filter-option {
+    text-align: center !important;
+    font-weight: bold;
 }
 
 .dropdown-item {
     user-select: none;
 }
+
+/* DATA CONTROLS */
+
+#data-io {
+    overflow: hidden;
+    user-select: none;
+}
+
+.data-io-close {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+#data-set-filter-container {
+    left: 0px;
+    bottom: -40px;
+    height: 48px;
+    -webkit-transition: bottom 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: bottom 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: bottom 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: bottom 0.3s ease-out;
+}
+
+.data-set-filter-container-slideUp {
+    bottom: 10px !important;
+    -webkit-transition: bottom 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: bottom 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: bottom 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: bottom 0.3s ease-out;
+}
+
+.data-set-filter {
+    width: 50%;
+    padding: 5px;
+    color: #F00;
+    background: linear-gradient(#eee, #fff);
+}
+
+
+.data-set-filter-group { 
+    position: absolute;
+    display: block;
+    bottom: 0px;
+    width: 100%;
+}
+
+input {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+
+input:focus { 
+    outline: none;
+}
+  
+  /* LABEL ======================================= */
+label {
+    color: #999; 
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all; 
+    -moz-transition: 0.2s ease all; 
+    -webkit-transition: 0.2s ease all;
+}
+  
+  /* active state */
+input:focus ~ label, input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #5264AE;
+}
+  
+  /* BOTTOM BARS ================================= */
+.data-set-filter-bar { 
+      position: relative;
+      display: block;
+      width: 100%;
+}
+
+.data-set-filter-bar:before, .data-set-filter-bar:after {
+    content: '';
+    height: 2px; 
+    width: 0;
+    bottom: 1px; 
+    position: absolute;
+    background: #5264AE; 
+    transition: 0.2s ease all; 
+    -moz-transition: 0.2s ease all; 
+    -webkit-transition: 0.2s ease all;
+}
+
+.data-set-filter-bar:before {
+    left: 50%;
+}
+.data-set-filter-bar:after {
+    right: 50%; 
+}
+  
+  /* active state */
+input:focus ~ .data-set-filter-bar:before, input:focus ~ .data-set-filter-bar:after {
+    width: 50%;
+}
+  
+  /* HIGHLIGHTER ================================== */
+.data-set-filter-highlight {
+    position: absolute;
+    height: 60%; 
+    width: 100px; 
+    top: 25%; 
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+  
+  /* active state */
+input:focus ~ .data-set-filter-highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+  
+  /* ANIMATIONS ================ */
+  @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+
+
+
+
+
+
 
 #map-container {
     position: absolute;
@@ -66,7 +239,21 @@ body {
 	animation-name: greenPulse;
 	-webkit-animation-name: greenPulse;
 	-webkit-animation-duration: 2s;
-	-webkit-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: left 0.3s ease-out;
+}
+
+.display-toggle-slideIn {
+	left: -60px !important;
+	animation-duration: 2s;
+	-webkit-animation-duration: 2s;
+	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: left 0.3s ease-out;
 }
 
 #display-controls {
@@ -82,6 +269,23 @@ body {
     -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
     -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
     transition: left 0.3s ease-out;
+}
+
+.controlsSlideOut {
+	left: 0px !important;
+	animation-duration: 2s;
+	-webkit-animation-duration: 2s;
+	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+    transition: left 0.3s ease-out;
+}
+
+.blue-divider {
+    position: relative;
+    height: .5em;
+    width: 100%;
+    background-color: rgb(11, 122, 191);
 }
 
 #data-set-container {
@@ -136,6 +340,16 @@ body {
     bottom: 0px;
 }
 
+/* FOOTER - MISC */
+
+#rs21logo {
+    z-index: 5000;
+    width: 4rem;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
 /* Animations Toggle Classes */
 @-o-keyframes greenPulse {
 	0% { text-shadow: 0px 0px 5px transparent; }
@@ -160,14 +374,4 @@ body {
 	0% { text-shadow: 0px 0px 5px transparent; }
 	50% { text-shadow: 0px 0px 5px #00FF00; }
 	100% { text-shadow: 0px 0px 5px transparent; }
-}
-
-.controlsSlideOut {
-	left: 0px !important;
-	animation-duration: 2s;
-	-webkit-animation-duration: 2s;
-	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
-    -moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
-    -o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
-    transition: left 0.3s ease-out;
 }
