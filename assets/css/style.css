@@ -31,9 +31,9 @@ body {
 }
 
 #data-set-selector {
-    position: absolute;
+    /* position: absolute;
     top: 8px;
-    left: 8px;
+    left: 8px; */
 }
 
 #data-set-selector > .btn {
@@ -68,7 +68,7 @@ body {
 
 #data-set-filter-container {
     left: 0px;
-    bottom: -40px;
+    bottom: -48px;
     height: 48px;
     -webkit-transition: bottom 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
     -moz-transition: bottom 0.3s ease-out;  /* Firefox 4-15 */

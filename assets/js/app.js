@@ -1,3 +1,21 @@
+Vue.component('custom-marker-census', {
+  components: {
+    'l-marker': window.Vue2Leaflet.LMarker,
+    'l-popup': window.Vue2Leaflet.LPopup,
+    'l-control-attribution': window.Vue2Leaflet.LControlAttribution,
+  },
+  props: ['id', 'marker'],
+
+  template: `
+  <l-marker :lat-lng="marker">
+    <l-popup>"id"<br>
+      <a href="https://rs21.io" target="_blank">https://rs21.io</a>
+    </l-popup> 
+  </l-marker>
+  `
+})
+
+
 new Vue({
     el: '#app',
     data:  {
@@ -22,6 +40,7 @@ new Vue({
       'l-tile-layer': window.Vue2Leaflet.LTileLayer,
       'l-control-zoom': window.Vue2Leaflet.LControlZoom,
       'l-marker': window.Vue2Leaflet.LMarker,
+      'l-popup': window.Vue2Leaflet.LPopup,
       'l-control-attribution': window.Vue2Leaflet.LControlAttribution,
     },
     created: function() {
@@ -34,6 +53,10 @@ new Vue({
           this.data_set_type = t;
           d = this[t];
           this.get_datasets(this.data_set_type, d);
+      },
+      clearMarker() {
+        // console.log(this.Census[0].geometry.coordinates[0][0]);
+          // removeMarkers();
       },
       currentMonth() {
         date = new Date(),
