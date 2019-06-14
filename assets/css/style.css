@@ -30,12 +30,6 @@ body {
     font-size: 1.05em;
 }
 
-#data-set-selector {
-    /* position: absolute;
-    top: 8px;
-    left: 8px; */
-}
-
 #data-set-selector > .btn {
     background-color: rgb(11, 122, 191);
 }
@@ -64,6 +58,15 @@ body {
     position: absolute;
     right: 8px;
     top: 8px;
+}
+
+#data-set-item-info {
+    position: absolute;
+    height: 320px;
+    width: 100%;
+    top: 50px;
+    left: 0px;
+
 }
 
 #data-set-filter-container {
@@ -196,12 +199,7 @@ input:focus ~ .data-set-filter-highlight {
     to 	{ width:0; background:transparent; }
   }
 
-
-
-
-
-
-
+/* MAP STARTS HERE */
 #map-container {
     position: absolute;
     bottom: 0px;
@@ -220,6 +218,21 @@ input:focus ~ .data-set-filter-highlight {
     right: 0px;
     top: 0px;
 }
+
+#locate-position{
+    position: absolute;
+    top: 73px;
+    right: 12px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 20px;
+    padding: 0;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    z-index: 9999;
+  }
 
 #display-toggle {
     position: fixed;

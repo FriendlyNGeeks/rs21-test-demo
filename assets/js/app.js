@@ -1,22 +1,4 @@
-Vue.component('custom-marker-census', {
-  components: {
-    'l-marker': window.Vue2Leaflet.LMarker,
-    'l-popup': window.Vue2Leaflet.LPopup,
-    'l-control-attribution': window.Vue2Leaflet.LControlAttribution,
-  },
-  props: ['id', 'marker'],
-
-  template: `
-  <l-marker :lat-lng="marker">
-    <l-popup>"id"<br>
-      <a href="https://rs21.io" target="_blank">https://rs21.io</a>
-    </l-popup> 
-  </l-marker>
-  `
-})
-
-
-new Vue({
+var MyVue = new Vue({
     el: '#app',
     data:  {
       date: new Date(),
@@ -25,6 +7,13 @@ new Vue({
       Facebook: [],
       Twitter: [],
       Census: [],
+      Temp_Facebook: [],
+      Temp_Twitter: [],
+      Temp_Census: [],
+      Temp_L_Facebook: [],
+      Temp_L_Twitter: [],
+      Temp_L_Census: [],
+      Temp_Single: [],
       options: [],
       center: '',
       style_id: '',
@@ -33,6 +22,8 @@ new Vue({
       mapbox_token: '',
       attribution: '',
       marker: '',
+      my_marker: [],
+      my_radius: '',
       jsonURL: 'https://api.myjson.com/bins/6k2md',
     },
     components: {
@@ -40,11 +31,12 @@ new Vue({
       'l-tile-layer': window.Vue2Leaflet.LTileLayer,
       'l-control-zoom': window.Vue2Leaflet.LControlZoom,
       'l-marker': window.Vue2Leaflet.LMarker,
+      'l-circle' : window.Vue2Leaflet.LCircle,
       'l-popup': window.Vue2Leaflet.LPopup,
       'l-control-attribution': window.Vue2Leaflet.LControlAttribution,
     },
     created: function() {
-      console.log("Vue instances created")
+      console.log("Vue instances created");
       this.prepareMap();
     },
     methods: {
@@ -54,9 +46,31 @@ new Vue({
           d = this[t];
           this.get_datasets(this.data_set_type, d);
       },
-      clearMarker() {
-        // console.log(this.Census[0].geometry.coordinates[0][0]);
-          // removeMarkers();
+      myLocation() {
+        this.$refs.map.mapObject.locate({setView: true, maxZoom: 15, enableHighAccuracy: true});
+        function onLocationFound(e) {
+          radius = e.accuracy / 2;
+          MyVue.my_marker = [e.latlng.lat, e.latlng.lng];
+          MyVue.my_radius = radius;
+        }
+        // Run function if location is found
+        this.$refs.map.mapObject.on('locationfound', onLocationFound);
+      
+        function onLocationError(e) {
+            alert(e.message);
+        }
+        // Run function if location is not found
+        this.$refs.map.mapObject.on('locationerror', onLocationError);
+      },
+      populateMarkerF10() {
+        this.clearMarkers();
+        currentType = "Temp_"+ this.data_set_type;
+        this[currentType] = this[this.data_set_type].splice(0, 10);
+      },
+      populateMarkerL10() {
+        this.clearMarkers();
+        currentType = "Temp_L_"+ this.data_set_type;
+        this[currentType] = this[this.data_set_type].splice(this[this.data_set_type].length - 10, 10);
       },
       currentMonth() {
         date = new Date(),
@@ -91,7 +105,7 @@ new Vue({
           });
         })
         .catch(function (error) {
-          // handle error
+          // Handle error
           console.log(error);
           var alertmsg = "Data set types not found at "+this.jsonURL+" fetching local cache copy";
           alert(alertmsg);
@@ -99,7 +113,7 @@ new Vue({
           function getLocalDataSets() {
             $.getJSON( "assets/data-sets/dataset_type.json", function( data ) {
               $.each( data, function( key, val ) {
-                //Push objects returned in data to global VUE Array data.[data_sets]
+                // Push objects returned in data to global VUE Array data.[data_sets]
                 d.push(val);
               });
             });
@@ -107,38 +121,49 @@ new Vue({
           getLocalDataSets();
         })
       },
-
+      //
       get_datasets: function(t, d) {
         var jsonDataset = "assets/data-sets/" + t + ".json"
         console.log(jsonDataset);
         $.getJSON( jsonDataset, function( data ) {
           
-          function writeDataSetToDom (d) {
-            //Clear UL for new dataset
+          function writeDataSetToDom (d, x) {
+            // Clear UL for new dataset
             var ul = document.querySelector(".ul-data-list");
             ul.innerHTML = "";
-            //Begin Document Fragment to write to DOM
+            // Begin Document Fragment to write to DOM
             var c = document.createDocumentFragment();
               for (var i=0; i<d.length; i++) {
                   var e = document.createElement("li");
-                  var vueClick = document.createAttribute("onClick");       // Create a "class" attribute
-                  vueClick.value = "alertNumber("+i+",\""+ t + "\")";
                   e.className = "data-set-item card";
                   e.id = "data-set";
-                  e.setAttributeNode(vueClick);
-                  
-                  // e.addEventListener("click", function (e) {
-                  //     document.getElementById('userViewersLookup').classList.add('userViewersLookupOpen');
-                  //     ajaxViewersTwitchStats(this.innerHTML);
-                  // });
-                  // e.innerHTML = (d[i].Name +' '+ d[i].Category);
+                  // Filter Logic for creating Data-IO Items list with corresponding attributes to pass to functions
                   if (t == "Twitter"){
-                    // console.log(t);
+                    // Used for single item clicks
+                    twlat = d[i].Lat;
+                    twlong = d[i].Long;
+                    twuser = "'"+ d[i].Username + "'";
+                    twdtg = "'" + d[i].Time + "'";
+                    twtweet = "'" + d[i].Tweet + "'";
+                    $(e).attr('onClick', 'populateMarkerThisItem(' + twuser + ','+ twlat + ',' + twlong + ',' + twdtg + ','+ twtweet + ')');
+                    //---------------------------
                     e.innerHTML = ([i] +' | Username: '+ d[i].Username);
                   }else if (t == "Census") {
-                    // console.log(d[i]);
+                    // Used for single item clicks
+                    cslat = d[i].geometry.coordinates[0][0][1];
+                    cslong = d[i].geometry.coordinates[0][0][0];
+                    csid = "'"+ d[i].properties.GEOID + "'";
+                    $(e).attr('onClick', 'populateMarkerThisItem(' + csid + ','+ cslat + ',' + cslong + ')');
+                    //---------------------------
                     e.innerHTML = ([i] +' | GEOID: '+ d[i].properties.GEOID);
                   }else if(t == "Facebook"){
+                    // Used for single item clicks
+                    fblat = d[i].Lat;
+                    fblong = d[i].Long;
+                    fbname = '"' + d[i].Name + '"';
+                    fbcheckins = d[i].Checkins;
+                    $(e).attr('onClick', 'populateMarkerThisItem(' + fbname + ','+ fblat + ',' + fblong + ',' + fbcheckins + ')');
+                    //---------------------------
                     e.innerHTML = ([i] +' | Place: '+ d[i].Name);
                   }
                   
@@ -147,8 +172,7 @@ new Vue({
               document.getElementById("data-set-list-ul").appendChild(c);
           }
           
-
-          //Calculate json(dataset) full length and break up push to array
+          // Calculate json(dataset) full length and break up push to array
           function jsonPaginationCheck( key, val ) {
             var l= (Object.keys(data).length);
             var e = Math.floor((Object.keys(data).length) / 200);
@@ -158,13 +182,12 @@ new Vue({
               console.log('Pagination skipped');
               // PUSH DATA VALUES TO ARRAY ALL AT ONE TIME
               $.each( data, function( key, val ) {
-                //Push objects returned in data to global VUE Array data.
+                // Push objects returned in data to global VUE Array data.
                 d.push(val);
               });
-              writeDataSetToDom(d);
+              writeDataSetToDom(d, x);
             }
             
-
             function startpagination(f, e) {
               var paginationMsg = "Pagination started on " + l + " items";
               console.log(paginationMsg);
@@ -197,7 +220,7 @@ new Vue({
               }
               writeDataSetToDom(d);
             }
-            //Logic test to paginate or not
+            // Logic test to paginate or not
             if (l > 200) {
               // Check if data set has already been populated
               if (d.length = '0'){
@@ -214,13 +237,25 @@ new Vue({
               }
             }
           };
-          //Logic function
+          // Logic function
           jsonPaginationCheck();
         });
+      },
+      clearMarkers() {
+        var tmap = this.$refs.map.mapObject;
+        this.Temp_Census = [];
+        this.Temp_Facebook = [];
+        this.Temp_Twitter = [];
+        this.Temp_L_Census = [];
+        this.Temp_L_Facebook = [];
+        this.Temp_L_Twitter = [];
+        this.Temp_Single = [];
+        this.my_marker = [];
+
       }
     },
     computed: {
-      
+          
     },
     beforeMount: function() {
       //Used to read data sets to javascript variables on load of VUE instances

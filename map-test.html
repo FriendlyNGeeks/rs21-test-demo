@@ -15,10 +15,11 @@
         <!-- HEADER SCRIPTS -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="assets/js/jquery.min.js"></script>
+        <!-- FONT AWESOME -->
+        <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <!-- BOOTSTRAP -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
-        <script src="assets/components/vue-components.js"></script>
         <link rel="stylesheet" href="assets/css/style.css">
         <!-- LEAFLET -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -32,30 +33,6 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">RS21 Demo | {WARNING}</h5>
-                </div>
-                <div class="modal-body">
-                    The data in this demo has been sanitized of all personal data and made available to the general public.
-                    <p></p>
-                    <p class="section-title">
-                        Children's privacy
-                    </p>
-                    <p>
-                        This website is not intended for use by children under the age of 18.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary modal-cancel" >Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
-                </div>
-            </div>
-            </div>
-        </div>
         <!-- VUE js and Main Body Content -->
         <div id="app">
             <header class="sticky-top">
@@ -91,14 +68,17 @@
                                         Map
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                        <a class="dropdown-item" href="#">Map First 10</a>
-                                        <a class="dropdown-item" href="#">Map Last 10</a>
-                                        <a class="dropdown-item" href="#">Map 2 of Each Set</a>
+                                        <a class="dropdown-item" href="#" @click="populateMarkerF10()">Map First 10</a>
+                                        <a class="dropdown-item" href="#" @click="populateMarkerL10()">Map Last 10</a>
+                                        <!-- <a class="dropdown-item" href="#" @click="populateMarker5EA()">Map 5 of Each Set</a> -->
                                     </div>
                                 </div>
-                                <button type="button" class="data-io-clear btn btn-danger" @click="clearMarker()" disabled>Clear</button>
+                                <button type="button" class="data-io-clear btn btn-danger" @click="clearMarkers()" disabled>Clear</button>
                             </div>
                             <button type="button" class="btn btn-light data-io-close" title="close" onClick="data_io_close()">X</button>
+                            <div id="data-set-item-info">
+                                <card v-bind:key="Temp_Single.id" v-for="(item, index) in Temp_Single" v-bind:a=Temp_Single[index].a v-bind:b=Temp_Single[index].b v-bind:c=Temp_Single[index].c v-bind:d=Temp_Single[index].d class="card"></card>
+                            </div>
                             <div id="data-set-filter-container" class="position-absolute text-center w-100">
                                 <div class="data-set-filter-group">      
                                     <input id="searchFilter" type="text" value="" onkeyup="filterDataSetItems()" required>
@@ -111,33 +91,45 @@
                         <div class="blue-divider"></div>
                         <div id="data-set-container" class="h-50">
                             <ul id="data-set-list-ul" class="ul-data-list">
-                                <!-- <addresses v-bind:key="listing.id" v-for="(listing, index) in listings" v-bind:name=listings[index].Name v-bind:category=listings[index].Category></addresses> -->
                             </ul>
-                            <card v-bind:currentday=currentDayofWeek() v-bind:currentmonth=currentMonth() v-bind:day=date.getDate() v-bind:year=date.getFullYear() class="card"></card>
                         </div>
                     </div>
                     <div id="display-map" class="">
                         <div id="map-container" >
-                                <l-map id="map":options="options" :zoom="zoom" :center= "center" :attribution= 'attribution' class="container-fluid leaflet-container leaflet-touch leaflet-fade-anim leaflet-touch-zoom leaflet-grab leaflet-touch-drag" tabindex="2">
-                                    <l-control-zoom position="topright"></l-control-zoom>
-                                    <l-tile-layer :url= "url"></l-tile-layer>
-                                    <l-control-attribution position="bottomright" :prefix="attribution">
-                                    </l-control-attribution>
-                                    <!-- <custom-marker-census v-bind:key="Census.id" v-for="(item, index) in Census" v-bind:name=Census[index].Name v-bind:marker=Census[index].geometry.coordinates[0][0] v-bind:id=Census[index].properties.GEOID></custom-marker-census> -->
-                                    <l-marker :lat-lng="marker">
+                            <l-map ref="map" id="map":options="options" :zoom="zoom" :center= "center" :attribution= 'attribution' class="container-fluid leaflet-container leaflet-touch leaflet-fade-anim leaflet-touch-zoom leaflet-grab leaflet-touch-drag" tabindex="2">
+                                <l-control-zoom position="topright"></l-control-zoom>
+                                <l-tile-layer :url= "url"></l-tile-layer>
+                                <l-control-attribution position="bottomright" :prefix="attribution">
+                                </l-control-attribution>
+                                <custom-marker-self v-bind:key="my_marker.id" v-for="(item, index) in my_marker.slice(0,1)" v-bind:lat="my_marker[0]" v-bind:long="my_marker[1]" v-bind:radius="my_radius"></custom-marker-self>
+                                <custom-marker-circle v-bind:key="my_marker.id" v-for="(item, index) in my_marker.slice(0,1)" v-bind:lat="my_marker[0]" v-bind:long="my_marker[1]" v-bind:radius="my_radius"></custom-marker-circle>
+                                <!-- Frist 10 Markers -->
+                                <custom-marker-census v-bind:key="Temp_Census.id" v-for="(item, index) in Temp_Census.slice(0,10)" v-bind:index=index v-bind:name=Temp_Census[index].Name v-bind:lat=Temp_Census[index].geometry.coordinates[0][0][1] v-bind:lng=Temp_Census[index].geometry.coordinates[0][0][0] v-bind:id=Temp_Census[index].properties.GEOID></custom-marker-census>
+                                <custom-marker-twitter v-bind:key="Temp_Twitter.id" v-for="(item, index) in Temp_Twitter.slice(0,10)" v-bind:user=Temp_Twitter[index].Username v-bind:lat=Temp_Twitter[index].Lat v-bind:lng=Temp_Twitter[index].Long v-bind:index=index v-bind:dtg=Temp_Twitter[index].Time></custom-marker-twitter>
+                                <custom-marker-facebook v-bind:key="Temp_Facebook.id" v-for="(item, index) in Temp_Facebook.slice(0,10)" v-bind:name=Temp_Facebook[index].Name v-bind:lat=Temp_Facebook[index].Lat v-bind:lng=Temp_Facebook[index].Long v-bind:index=index v-bind:checkins=Temp_Facebook[index].Checkins></custom-marker-facebook>
+                                <!-- Reverse Markers Last 10 -->
+                                <custom-marker-census v-bind:key="Temp_L_Census.id" v-for="(item, index) in Temp_L_Census.slice(0,10)" v-bind:index=index v-bind:name=Temp_L_Census[index].Name v-bind:lat=Temp_L_Census[index].geometry.coordinates[0][0][1] v-bind:lng=Temp_L_Census[index].geometry.coordinates[0][0][0] v-bind:id=Temp_L_Census[index].properties.GEOID></custom-marker-census>
+                                <custom-marker-twitter v-bind:key="Temp_L_Twitter.id" v-for="(item, index) in Temp_L_Twitter.slice(0,10)" v-bind:user=Temp_L_Twitter[index].Username v-bind:lat=Temp_L_Twitter[index].Lat v-bind:lng=Temp_L_Twitter[index].Long v-bind:index=index v-bind:dtg=Temp_L_Twitter[index].Time></custom-marker-twitter>
+                                <custom-marker-facebook v-bind:key="Temp_L_Facebook.id" v-for="(item, index) in Temp_L_Facebook.slice(0, 10)" v-bind:name=Temp_L_Facebook[index].Name v-bind:lat=Temp_L_Facebook[index].Lat v-bind:lng=Temp_L_Facebook[index].Long v-bind:index=index v-bind:checkins=Temp_L_Facebook[index].Checkins></custom-marker-facebook>
+                                <!-- RS21 Default Marker -->
+                                <l-marker :lat-lng="marker">
                                     <l-popup>RS21<br>
                                         <a href="https://rs21.io" target="_blank">https://rs21.io</a>
                                     </l-popup>    
-                                    </l-marker>
-                                </l-map>
+                                </l-marker>
+                            </l-map>
+                            <button id="locate-position" class="btn btn-sm btn-outline-success" title="Find Location" @click="myLocation()"><i class="fa fa-map-marker" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Modal -->
+            <modal></modal>
         </div>
         <div id="footer">
             <img id="rs21logo" src="assets/img/RS21_logo.png">
         </div>
+        <script src="assets/components/vue-components.js"></script>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/leaflet-mymap.js"></script>
     </body>
