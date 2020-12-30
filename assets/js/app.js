@@ -125,7 +125,7 @@ var MyVue = new Vue({
       get_datasets: function(t, d) {
         var jsonDataset = "assets/data-sets/" + t + ".json";
         var jasonDatasetLower = jsonDataset.toLowerCase();
-        console.log(jsonDatasetLower);
+        console.log(jsonDatasetLower+" get_datasets");
         $.getJSON( jsonDatasetLower, function( data ) {
           
           function writeDataSetToDom (d, x) {
