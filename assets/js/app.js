@@ -123,9 +123,10 @@ var MyVue = new Vue({
       },
       //
       get_datasets: function(t, d) {
-        var jsonDataset = "assets/data-sets/" + t + ".json"
-        console.log(jsonDataset);
-        $.getJSON( jsonDataset.toLowerCase(), function( data ) {
+        var jsonDataset = "assets/data-sets/" + t + ".json";
+        var jasonDatasetLower = jsonDataset.toLowerCase();
+        console.log(jsonDatasetLower);
+        $.getJSON( jsonDatasetLower, function( data ) {
           
           function writeDataSetToDom (d, x) {
             // Clear UL for new dataset
