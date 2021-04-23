@@ -91,7 +91,7 @@ var MyVue = new Vue({
         this.zoom = 15;
         this.attribution = 'Map data &copy; <a href="https://leafletjs.com/">Leaflet</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         this.mapbox_token = 'pk.eyJ1IjoiYW50enZpbGwiLCJhIjoiY2ttY21jaW1kMmN1aTJvcXM2bDI5MjZ0MiJ9.aEQeLPi8kHArXYUeUdqGCw';
-        this.url = 'https://api.mapbox.com/styles/v1/mapbox/'+ this.style_id +'/static/{z},{x},{y}.png/600x600?access_token='+ this.mapbox_token+'';
+        this.url = 'https://api.mapbox.com/styles/v1/mapbox/'+ this.style_id +'/static/{z},{x},{y}/600x600?access_token='+ this.mapbox_token+'';
         this.marker = L.latLng(35.083594,-106.6508292);
       },
       get_datasets_type: function(d) {
@@ -111,7 +111,7 @@ var MyVue = new Vue({
           alert(alertmsg);
           // ** USED TO PULL IN DATASET TYPES LOCALLY **
           function getLocalDataSets() {
-            $.getJSON( "assets/data-sets/dataset_type.json", function( data ) {
+            $.getJSON( "//assets/data-sets/dataset_type.json", function( data ) {
               $.each( data, function( key, val ) {
                 // Push objects returned in data to global VUE Array data.[data_sets]
                 d.push(val);
@@ -123,7 +123,7 @@ var MyVue = new Vue({
       },
       //
       get_datasets: function(t, d) {
-        var jsonDataset = "assets/data-sets/" + t + ".json";
+        var jsonDataset = "//assets/data-sets/" + t + ".json";
         var jasonDatasetLower = jsonDataset.toLowerCase();
         console.log(jsonDatasetLower+" get_datasets");
         $.getJSON( jsonDatasetLower, function( data ) {
