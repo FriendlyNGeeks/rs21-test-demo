@@ -87,11 +87,11 @@ var MyVue = new Vue({
       prepareMap() {
         this.options = {"attributionControl": false, "zoomControl": false};
         this.center = L.latLng(35.083594,-106.6508292);
-        this.style_id = 'mapbox.streets';
+        this.style_id = 'mapbox/streets-v11/tiles';
         this.zoom = 15;
         this.attribution = 'Map data &copy; <a href="https://leafletjs.com/">Leaflet</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         this.mapbox_token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-        this.url = 'https://api.tiles.mapbox.com/v4/'+ this.style_id +'/{z}/{x}/{y}.png?access_token='+ this.mapbox_token+'';
+        this.url = 'https://api.mapbox.com/styles/v1/'+ this.style_id +'/{z}/{x}/{y}?access_token='+ this.mapbox_token+'';
         this.marker = L.latLng(35.083594,-106.6508292);
       },
       get_datasets_type: function(d) {
